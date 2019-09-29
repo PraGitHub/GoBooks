@@ -26,75 +26,87 @@ html
           button type="submit" class="btn btn-outline-light" Login / Signup
         {{end}}
 
-      div class="container"
-        div class="modal fade" id="addBookResultModal" role="dialog"
-          div class="modal-dialog"
-            div class="modal-content"
-              div class="modal-header"
-                h4 class="modal-title" id="addBookResultModalHead"
-                button type="button" class="close" data-dismiss="modal" &times;
-              div class="modal-body"
-                a id="addBookResultModalBody"   
-              div class="modal-footer"
-                button type="button" class="btn btn-default" data-dismiss="modal" Close
+      ul class="list-group"
+        li class="list-group-item bg-dark"
+          div class="container"
+            div class="modal fade" id="addBookResultModal" role="dialog"
+              div class="modal-dialog"
+                div class="modal-content"
+                  div class="modal-header"
+                    h4 class="modal-title" id="addBookResultModalHead"
+                    button type="button" class="close" data-dismiss="modal" &times;
+                  div class="modal-body"
+                    a id="addBookResultModalBody"   
+                  div class="modal-footer"
+                    button type="button" class="btn btn-default" data-dismiss="modal" Close
         
-      ul class="nav nav-pills nav-justified nav-dark" id="pills-tab" role="tablist"
-        li class="nav-item nav-item-success"
-          a class="nav-link active btn btn-outline-light" id="search-for-books-tab" data-toggle="pill" href="#search-for-books" role="tab" aria-controls="search-for-books" aria-selected="true" Search for Books
-        li class="nav-item"
-          a class="nav-link btn btn-outline-light" id="my-collection-tab" data-toggle="pill" href="#my-collection" role="tab" aria-controls="my-collection" aria-selected="false" My Collection
-      div class="tab-content" id="pills-tabContent"
-        div class="tab-pane fade show active" id="search-for-books" role="tabpanel" aria-labelledby="search-for-books-tab"
-          ul class="list-group"
-            li class="list-group-item bg-dark"
-              ul class="list-group"
-                li id="li-search-form" class="list-group-item bg-dark"
-                  form id="search-form" class="form-inline" onsubmit="return false"
-                    label class="mr-sm-4"
-                      span class="badge badge-light"
-                        a Enter the query here
-                    input class="form-control mr-sm-4" type="search" name="queryString" placeholder="Search" aria-label="Search"
-                    button class="btn btn-outline-light" title="Search" type="submit" onclick="return submitSearch()" Search
-          ul clas="list-group" id="table-search"
-            li class="list-group-item bg-dark"
-              ul class="list-group"
-                li class="list-group-item bg-dark"
-                  table class="table table-hover table-bordered table-dark" 
-                    thead
-                      tr
-                        th scope="col" Title
-                        th scope="col" Author
-                        th scope="col" Year
-                        th scope="col" ID
-                        th scope="col" Action
-                    tbody id="search-results"
+        li
 
-        div class="tab-pane fade" id="my-collection" role="tabpanel" aria-labelledby="my-collection-tab"
-          ul clsss="list-group" id="table-collection"
-            li class="list-group-item bg-dark"              
-              ul class="list-group"
-                li class="list-group-item bg-dark"
-                  table class="table table-hover table-bordered table-dark"
-                    thead
-                      tr
-                        th scope="col" #
-                        th scope="col" Title
-                        th scope="col" Author
-                        th scope="col" Classification
-                        th scope="col" ID
-                        th scope="col" Action
-                    tbody id="collection-results"
-                      {{range .Books}}
-                      tr id="table-row-{{.PK}}"
-                        td {{.PK}}
-                        td {{.Title}}
-                        td {{.Author}}
-                        td {{.Classification}}
-                        td {{.ID}}
-                        td 
-                          button class="btn btn-outline-danger" title="Delete this book" type="button" onclick="return deleteBook({{.PK}})"
-                            i class="fas fa-trash-alt"
-                      {{end}}
+        li
+          ul
+            li
+              button class="btn btn-outline-light" title="Search Form" type="button" onclick="toggleId('li-search-form')" Search for books
+        
+        li
+        
+        li
+          ul
+            li
+              button class="btn btn-outline-light" title="Collection Form" type="button" onclick="toggleId('table-collection')" Collection of books
+
+        li
+
+        li
+          ul
+            li id="li-search-form" class="list-group-item bg-dark"
+              form id="search-form" class="form-inline" onsubmit="return false"
+                label class="mr-sm-4"
+                  span class="badge badge-light"
+                    a Enter the query here
+                input class="form-control mr-sm-2" type="search" name="queryString" placeholder="Search" aria-label="Search"
+                button class="btn btn-outline-light" title="Search" type="submit" onclick="return submitSearch()" Search
+        
+        li
+
+        li                          
+          ul class="list-group"
+            li class="list-group-item bg-dark" id="table-collection"
+              table class="table table-hover table-bordered table-dark"
+                thead
+                  tr
+                    th scope="col" #
+                    th scope="col" Title
+                    th scope="col" Author
+                    th scope="col" Classification
+                    th scope="col" ID
+                    th scope="col" Action
+                tbody id="collection-results"
+                  {{range .Books}}
+                  tr id="table-row-{{.PK}}"
+                    td {{.PK}}
+                    td {{.Title}}
+                    td {{.Author}}
+                    td {{.Classification}}
+                    td {{.ID}}
+                    td 
+                      button class="btn btn-outline-danger" title="Delete this book" type="button" onclick="return deleteBook({{.PK}})"
+                        i class="fas fa-trash-alt"
+                  {{end}}
+
+        li
+
+        li
+          ul class="list-group"
+            li class="list-group-item bg-dark" id="table-search"
+              table class="table table-hover table-bordered table-dark" 
+                thead
+                  tr
+                    th scope="col" Title
+                    th scope="col" Author
+                    th scope="col" Year
+                    th scope="col" ID
+                    th scope="col" Action
+                tbody id="search-results"
 
       script type="text/javascript" src="js/helper.js"
       = javascript
@@ -116,6 +128,10 @@ html
             function onLoadFunction() {
                 idsToHide = [
                     "table-head-search",
+                    "table-head-collection",
+                    "li-search-form",
+                    "li-collection-form",
+                    "table-collection",
                     "table-search"
                 ];
                 idsToHide.forEach(function(id){
@@ -129,6 +145,7 @@ html
                     method: "POST",
                     data: $("#search-form").serialize(),
                     success: function (rawData) {
+                        hideId("table-collection");
                         var searchResults = $("#search-results");
                         searchResults.empty();
 
@@ -156,6 +173,7 @@ html
                     url: `/books/${id}`,
                     method: "POST",
                     success: function (rawData) {
+                        hideId("table-search");
                         if(rawData){
                             var parsed = JSON.parse(rawData);
                             if (parsed && parsed.Update) {
