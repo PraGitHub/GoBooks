@@ -9,12 +9,14 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"os"
 	"strconv"
 	"strings"
 
 	"github.com/GoIncremental/negroni-sessions/cookiestore"
 	"github.com/goincremental/negroni-sessions"
 	gmux "github.com/gorilla/mux"
+	_ "github.com/lib/pq"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/urfave/negroni"
 	"github.com/yosssi/ace"
@@ -22,7 +24,7 @@ import (
 	"gopkg.in/gorp.v1"
 )
 
-var port = ":8080"
+var port string
 
 type Book struct {
 	PK             int64  `db:"pk"`
@@ -78,14 +80,26 @@ var db *sql.DB
 var dbMap *gorp.DbMap
 
 func initDB() (err error) {
-	db, err = sql.Open("sqlite3", "dev.db")
-	if err != nil {
-		return err
-	}
+	env := os.Getenv("ENV")
 
-	dbMap = &gorp.DbMap{
-		Db:      db,
-		Dialect: gorp.SqliteDialect{},
+	if env == "production" {
+		db, err = sql.Open("postgres", os.Getenv("DATABASE_URL"))
+		if err != nil {
+			return err
+		}
+		dbMap = &gorp.DbMap{
+			Db:      db,
+			Dialect: gorp.PostgresDialect{},
+		}
+	} else {
+		db, err = sql.Open("sqlite3", "dev.db")
+		if err != nil {
+			return err
+		}
+		dbMap = &gorp.DbMap{
+			Db:      db,
+			Dialect: gorp.SqliteDialect{},
+		}
 	}
 
 	dbMap.AddTableWithName(Book{}, "books").SetKeys(true, "pk")
@@ -94,7 +108,6 @@ func initDB() (err error) {
 	if err != nil {
 		return err
 	}
-
 	return nil
 }
 
@@ -141,7 +154,7 @@ func getUserBooks(username string) (obtained bool, books []Book) {
 	pkMap := getUserBookMap(user.Books)
 	for pk := range pkMap {
 		var b Book
-		err := dbMap.SelectOne(&b, "select * from books where pk = ?", pk)
+		err := dbMap.SelectOne(&b, "select * from books where \"pk\" = "+dbMap.Dialect.BindVar(0), pk)
 		if err == nil {
 			books = append(books, b)
 		}
@@ -325,7 +338,7 @@ func main() {
 
 		username := getStringFromSession(r, "User")
 
-		err := dbMap.SelectOne(&userBook, "select * from books where id = ?", qs)
+		err := dbMap.SelectOne(&userBook, "select * from books where \"id\" = "+dbMap.Dialect.BindVar(0), qs)
 		if err != nil && err != sql.ErrNoRows {
 			log.Println("/books/add id = ", qs, " error while retrieving book from database, error = ", err.Error())
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -360,7 +373,7 @@ func main() {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
-			err = dbMap.SelectOne(&userBook, "select * from books where id = ?", qs)
+			err = dbMap.SelectOne(&userBook, "select * from books where \"id\" = "+dbMap.Dialect.BindVar(0), qs)
 			if err != nil {
 				log.Println("/books/add id = ", qs, " error while retrieving books from database, error = ", err.Error())
 				http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -451,7 +464,14 @@ func main() {
 	n.Use(negroni.HandlerFunc(verifyDBConnection))
 	n.Use(negroni.HandlerFunc(verifyUser))
 	n.UseHandler(mux)
-	n.Run(port)
+
+	port = os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	log.Println("func main :: port = ", port)
+	n.Run(":" + port)
 }
 
 func search(query string) (results []SearchResult, err error) {
