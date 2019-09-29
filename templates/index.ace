@@ -96,7 +96,6 @@ html
                             i class="fas fa-trash-alt"
                       {{end}}
 
-      script type="text/javascript" src="js/helper.js"
       = javascript
             function showId(id){
                 id = "#" + id;
