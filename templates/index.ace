@@ -1,7 +1,7 @@
 = doctype html
 html
   head
-    title Search Books
+    title Go Books
     link rel="icon" type="image/ico" href="//cdn1.vectorstock.com/i/1000x1000/09/15/horizontal-stack-of-colored-books-flat-icon-vector-7320915.jpg"
     script src="//code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"
     script src="//code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"
@@ -13,9 +13,10 @@ html
     body class="bg-dark" onload="onLoadFunction()"
       nav class="navbar navbar-dark bg-dark"
         a class="navbar-brand" href="#"
-          span class="mr-sm-2"
-            i class="fas fa-book-reader"
-            text   Search Books
+          strong
+            span class="mr-sm-2"
+              i class="fas fa-book-reader"
+              text   Go Books
         {{if .User}}
         span class="badge badge-light"
           a logged in as {{.User}}
@@ -40,21 +41,23 @@ html
         
       ul class="nav nav-pills nav-justified nav-dark" id="pills-tab" role="tablist"
         li class="nav-item nav-item-success"
-          a class="nav-link active btn btn-outline-light" id="search-for-books-tab" data-toggle="pill" href="#search-for-books" role="tab" aria-controls="search-for-books" aria-selected="true" Search for Books
+          a class="nav-link active btn btn-outline-light" id="search-for-books-tab" data-toggle="pill" href="#search-for-books" role="tab" aria-controls="search-for-books" aria-selected="true" 
+            strong Search Books
         li class="nav-item"
-          a class="nav-link btn btn-outline-light" id="my-collection-tab" data-toggle="pill" href="#my-collection" role="tab" aria-controls="my-collection" aria-selected="false" My Collection
+          a class="nav-link btn btn-outline-light" id="my-collection-tab" data-toggle="pill" href="#my-collection" role="tab" aria-controls="my-collection" aria-selected="false" 
+            strong My Library
       div class="tab-content" id="pills-tabContent"
         div class="tab-pane fade show active" id="search-for-books" role="tabpanel" aria-labelledby="search-for-books-tab"
           ul class="list-group"
             li class="list-group-item bg-dark"
               ul class="list-group"
                 li id="li-search-form" class="list-group-item bg-dark"
-                  form id="search-form" class="form-inline" onsubmit="return false"
-                    label class="mr-sm-4"
-                      span class="badge badge-light"
-                        a Enter the query here
-                    input class="form-control mr-sm-4" type="search" name="queryString" placeholder="Search" aria-label="Search"
-                    button class="btn btn-outline-light" title="Search" type="submit" onclick="return submitSearch()" Search
+                  form id="search-form" onsubmit="return false"
+                    div class="row form-group"
+                      div class="col"
+                        input class="form-control" type="search" name="queryString" placeholder="Enter the query here to search" aria-label="Search"
+                      div class="col-sm-1"
+                        button class="btn btn-outline-light form-control" title="Search" type="submit" onclick="return submitSearch()" Search
           ul clas="list-group" id="table-search"
             li class="list-group-item bg-dark"
               ul class="list-group"
