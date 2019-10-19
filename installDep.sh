@@ -7,3 +7,4 @@ go get github.com/urfave/negroni
 go get github.com/yosssi/ace
 go get golang.org/x/crypto/bcrypt
 go get gopkg.in/gorp.v1
+go get github.com/tools/godep

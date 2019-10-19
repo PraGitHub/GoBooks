@@ -1,2 +1,4 @@
 /*.exe
 /*.db
+/bin/*.exe
+/bin/*.db
