@@ -1,0 +1,78 @@
+{
+	"ImportPath": ".",
+	"GoVersion": "go1.13",
+	"GodepVersion": "v80",
+	"Deps": [
+		{
+			"ImportPath": "github.com/GoIncremental/negroni-sessions/cookiestore",
+			"Rev": "40b49004abeec57f602bad8509521a865b2be95e"
+		},
+		{
+			"ImportPath": "github.com/goincremental/negroni-sessions",
+			"Rev": "40b49004abeec57f602bad8509521a865b2be95e"
+		},
+		{
+			"ImportPath": "github.com/gorilla/context",
+			"Comment": "v1.1.1-4-g8559d4a",
+			"Rev": "8559d4a6b87e4f517ec1846eb90a192b8748cc89"
+		},
+		{
+			"ImportPath": "github.com/gorilla/mux",
+			"Comment": "v1.7.3-10-gff4e71f",
+			"Rev": "ff4e71f144166b1dfe3017a146f8ed32a82e688b"
+		},
+		{
+			"ImportPath": "github.com/gorilla/securecookie",
+			"Comment": "v1.1.1-11-g8645062",
+			"Rev": "86450627d8e6b88e00ea41f228489b89d08a40de"
+		},
+		{
+			"ImportPath": "github.com/gorilla/sessions",
+			"Comment": "v1.2.0-4-g400b592",
+			"Rev": "400b592ab70b9f8ee876cf47bc6c794d255dd4aa"
+		},
+		{
+			"ImportPath": "github.com/lib/pq",
+			"Comment": "v1.2.0-14-gf91d341",
+			"Rev": "f91d3411e481ed313eeab65ebfe9076466c39d01"
+		},
+		{
+			"ImportPath": "github.com/lib/pq/oid",
+			"Comment": "v1.2.0-14-gf91d341",
+			"Rev": "f91d3411e481ed313eeab65ebfe9076466c39d01"
+		},
+		{
+			"ImportPath": "github.com/lib/pq/scram",
+			"Comment": "v1.2.0-14-gf91d341",
+			"Rev": "f91d3411e481ed313eeab65ebfe9076466c39d01"
+		},
+		{
+			"ImportPath": "github.com/mattn/go-sqlite3",
+			"Comment": "v1.11.0-15-g3f45aef",
+			"Rev": "3f45aefa8dc8bbdd97619dd2765f864972f3310e"
+		},
+		{
+			"ImportPath": "github.com/urfave/negroni",
+			"Comment": "v1.0.0-35-gf431679",
+			"Rev": "f4316798d5d3acd39eb6784301b19f27f471415f"
+		},
+		{
+			"ImportPath": "github.com/yosssi/ace",
+			"Comment": "v0.0.5-2-g2b21b56",
+			"Rev": "2b21b56204aee785bf8d500c3f9dcbe3ed7d4515"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/bcrypt",
+			"Rev": "87dc89f01550277dc22b74ffcf4cd89fa2f40f4c"
+		},
+		{
+			"ImportPath": "golang.org/x/crypto/blowfish",
+			"Rev": "87dc89f01550277dc22b74ffcf4cd89fa2f40f4c"
+		},
+		{
+			"ImportPath": "gopkg.in/gorp.v1",
+			"Comment": "v1.7.2",
+			"Rev": "6a667da9c028871f98598d85413e3fc4c6daa52e"
+		}
+	]
+}
