@@ -2,3 +2,6 @@
 /*.db
 /bin/*.exe
 /bin/*.db
+/bin
+/src
+/pkg
