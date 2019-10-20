@@ -14,7 +14,7 @@ import (
 	"strings"
 
 	"github.com/GoIncremental/negroni-sessions/cookiestore"
-	"github.com/goincremental/negroni-sessions"
+	sessions "github.com/goincremental/negroni-sessions"
 	gmux "github.com/gorilla/mux"
 	_ "github.com/lib/pq"
 	_ "github.com/mattn/go-sqlite3"
