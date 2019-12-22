@@ -1,5 +1,9 @@
+Keep database cleaned
+    - Delete books if no user is referencing to them
 Try to implement everything in main.go in separate files.
     - dbInterface.go
     - routeHandlers.go
     - util.go
+
+
 
