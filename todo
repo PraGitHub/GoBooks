@@ -1,0 +1,5 @@
+Try to implement everything in main.go in separate files.
+    - dbInterface.go
+    - routeHandlers.go
+    - util.go
+
