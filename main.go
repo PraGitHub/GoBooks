@@ -196,6 +196,77 @@ func verifyDBConnection(w http.ResponseWriter, r *http.Request, next http.Handle
 	}
 }
 
+func search(query string) (results []SearchResult, err error) {
+	var searchURL = "http://classify.oclc.org/classify2/Classify?&summary=true&title="
+	var body []byte
+	var csr ClassifySearchResponse
+
+	searchURL = searchURL + url.QueryEscape(query)
+
+	log.Println("func search ::url = ", searchURL)
+
+	body, err = classifyAPI(searchURL)
+	if err != nil {
+		log.Println("func search :: err while requesting ", "url = ", searchURL, " error = ", err.Error())
+		return
+	}
+
+	err = xml.Unmarshal(body, &csr)
+	if err != nil {
+		log.Println("func search :: err while Unmarshalling ", "url = ", searchURL, " error = ", err.Error())
+		return
+	}
+	results = csr.Results
+
+	return
+}
+
+func find(id string) (cbr ClassifyBookResponse, err error) {
+	var searchURL = "http://classify.oclc.org/classify2/Classify?&summary=true&owi="
+	var body []byte
+
+	searchURL = searchURL + url.QueryEscape(id)
+
+	log.Println("func find ::url = ", searchURL)
+
+	body, err = classifyAPI(searchURL)
+	if err != nil {
+		log.Println("func find :: err while requesting ", "url = ", searchURL, " error = ", err.Error())
+		return
+	}
+
+	//log.Println("func find ::url = ", searchURL, " obtained body body = ", string(body))
+
+	err = xml.Unmarshal(body, &cbr)
+	if err != nil {
+		log.Println("func find :: err while Unmarshalling ", "url = ", searchURL, " error = ", err.Error())
+		return
+	}
+
+	log.Println("func find ::url = ", searchURL, " successfully unmarshalled cbr = ", cbr)
+
+	return
+}
+
+func classifyAPI(url string) (body []byte, err error) {
+	var resp *http.Response
+
+	resp, err = http.Get(url)
+	if err != nil {
+		log.Println("func classifyAPI :: err while requesting ", "url = ", url, " error = ", err.Error())
+		return
+	}
+	defer resp.Body.Close()
+
+	body, err = ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Println("func classifyAPI :: err while parsing the body ", "url = ", url, " error = ", err.Error())
+		return
+	}
+
+	return
+}
+
 func main() {
 	log.SetFlags(log.Ldate | log.Ltime | log.Lmicroseconds | log.Llongfile)
 
@@ -472,75 +543,4 @@ func main() {
 
 	log.Println("func main :: port = ", port)
 	n.Run(":" + port)
-}
-
-func search(query string) (results []SearchResult, err error) {
-	var searchURL = "http://classify.oclc.org/classify2/Classify?&summary=true&title="
-	var body []byte
-	var csr ClassifySearchResponse
-
-	searchURL = searchURL + url.QueryEscape(query)
-
-	log.Println("func search ::url = ", searchURL)
-
-	body, err = classifyAPI(searchURL)
-	if err != nil {
-		log.Println("func search :: err while requesting ", "url = ", searchURL, " error = ", err.Error())
-		return
-	}
-
-	err = xml.Unmarshal(body, &csr)
-	if err != nil {
-		log.Println("func search :: err while Unmarshalling ", "url = ", searchURL, " error = ", err.Error())
-		return
-	}
-	results = csr.Results
-
-	return
-}
-
-func find(id string) (cbr ClassifyBookResponse, err error) {
-	var searchURL = "http://classify.oclc.org/classify2/Classify?&summary=true&owi="
-	var body []byte
-
-	searchURL = searchURL + url.QueryEscape(id)
-
-	log.Println("func find ::url = ", searchURL)
-
-	body, err = classifyAPI(searchURL)
-	if err != nil {
-		log.Println("func find :: err while requesting ", "url = ", searchURL, " error = ", err.Error())
-		return
-	}
-
-	//log.Println("func find ::url = ", searchURL, " obtained body body = ", string(body))
-
-	err = xml.Unmarshal(body, &cbr)
-	if err != nil {
-		log.Println("func find :: err while Unmarshalling ", "url = ", searchURL, " error = ", err.Error())
-		return
-	}
-
-	log.Println("func find ::url = ", searchURL, " successfully unmarshalled cbr = ", cbr)
-
-	return
-}
-
-func classifyAPI(url string) (body []byte, err error) {
-	var resp *http.Response
-
-	resp, err = http.Get(url)
-	if err != nil {
-		log.Println("func classifyAPI :: err while requesting ", "url = ", url, " error = ", err.Error())
-		return
-	}
-	defer resp.Body.Close()
-
-	body, err = ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Println("func classifyAPI :: err while parsing the body ", "url = ", url, " error = ", err.Error())
-		return
-	}
-
-	return
 }
