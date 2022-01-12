@@ -313,6 +313,22 @@ func main() {
 	}).Methods("POST")
 
 	mux.HandleFunc("/search", func(w http.ResponseWriter, r *http.Request) {
+		qs := r.URL.Query().Get("query")
+		log.Println("/search => qs = ", qs)
+		results, err := search(qs)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		encoder := json.NewEncoder(w)
+		err = encoder.Encode(results)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}).Methods("GET")
+
+	mux.HandleFunc("/search", func(w http.ResponseWriter, r *http.Request) {
 		qs := r.FormValue("queryString")
 		log.Println("/search => qs = ", qs)
 		results, err := search(qs)
